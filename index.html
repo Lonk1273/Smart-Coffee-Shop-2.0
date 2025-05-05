@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Coffee Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #6e4f3b;
+    }
+    .drink-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    .drink-image {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+    .drink-info {
+      flex: 1;
+    }
+    .drink-info label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .drink-info input {
+      width: 60px;
+      padding: 5px;
+      margin-right: 10px;
+    }
+    .btn {
+      background-color: #6e4f3b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 20px 0;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: block;
+      width: 100%;
+    }
+    .btn:hover {
+      background-color: #5a4231;
+    }
+    .order-summary {
+      margin-top: 20px;
+    }
+    .order-summary p {
+      margin: 5px 0;
+    }
+    .estimated-time {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #chatbot {
+      margin-top: 40px;
+      padding: 20px;
+      border-top: 2px solid #ddd;
+    }
+    .chat-window {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 10px;
+      height: 200px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+    }
+    .user {
+      font-weight: bold;
+      color: #3b3b3b;
+    }
+    .bot {
+      font-style: italic;
+      color: #555;
+    }
+    #chatInput {
+      width: calc(100% - 100px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #sendBtn {
+      padding: 10px;
+      width: 80px;
+      margin-left: 10px;
+      background-color: #6e4f3b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .payment-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .payment-section input {
+      padding: 5px;
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    .payment-btn {
+      background-color: #6e4f3b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* New styles for chatbot key prompts */
+    .key-prompts {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .key-prompts h3 {
+      margin-top: 0;
+      color: #6e4f3b;
+    }
+    .key-prompts ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .key-prompts li {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Welcome to the Smart Coffee Shop!</h1>
+  <h2>Select Your Drinks</h2>
+
+  <div class="drink-row">
+    <img src="https://freerangestock.com/sample/56189/coffee-cup-with-leaf-drawing.jpg" alt="Coffee" class="drink-image" />
+    <div class="drink-info">
+      <label>Coffee</label>
+      Regular (£2.50): <input type="number" id="coffeeRegularQty" min="0" value="0" />
+      Espresso (£2.00): <input type="number" id="coffeeEspressoQty" min="0" value="0" />
+    </div>
+  </div>
+
+  <div class="drink-row">
+    <img src="https://www.stockvault.net/data/2016/06/17/202090/preview16.jpg" alt="Hot Chocolate" class="drink-image" />
+    <div class="drink-info">
+      <label>Hot Chocolate</label>
+      Regular (£3.00): <input type="number" id="hotChocolateRegularQty" min="0" value="0" />
+      Espresso (£2.50): <input type="number" id="hotChocolateEspressoQty" min="0" value="0" />
+    </div>
+  </div>
+
+  <div class="drink-row">
+    <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9zdGF0aWMvaW1hZ2Uvd2Vic2l0ZS8yMDIyLTA0L2xyL2ZyY2FwcHVjY2lub19iZXZlcmFnZV9pbl9tb3JuaW5nXzUtaW1hZ2Uta3liYnk1MmwuanBn.jpg" alt="Mocha" class="drink-image" />
+    <div class="drink-info">
+      <label>Mocha</label>
+      Regular (£3.50): <input type="number" id="mochaRegularQty" min="0" value="0" />
+      Espresso (£3.00): <input type="number" id="mochaEspressoQty" min="0" value="0" />
+    </div>
+  </div>
+
+  <button class="btn" onclick="placeOrder()">Place Order</button>
+
+  <div class="order-summary" id="orderSummary"></div>
+  <div class="estimated-time" id="estimatedTime"></div>
+
+  <div class="payment-section" id="paymentSection">
+    <input type="text" id="paymentAmount" placeholder="Amount to pay" readonly />
+    <button class="payment-btn" onclick="processPayment()">Pay</button>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div id="chatbot">
+    <h2>Chatbot Help</h2>
+    <div class="chat-window" id="chatWindow"></div>
+    <div>
+      <input type="text" id="chatInput" placeholder="Type a prompt like 'coffee'..." />
+      <button id="sendBtn" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- Key of Prompts Section -->
+  <div class="key-prompts">
+    <h3>Chatbot Key Prompts</h3>
+    <ul>
+      <li><strong>coffee</strong> - Information about coffee drinks.</li>
+      <li><strong>mocha</strong> - Information about mocha drinks.</li>
+      <li><strong>hot chocolate</strong> - Information about hot chocolate drinks.</li>
+      <li><strong>sizing</strong> - Information about available drink sizes (Regular, Espresso).</li>
+      <li><strong>prices</strong> - Information about drink prices.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  const drinkPrices = {
+    'Coffee': { 'Regular': 2.50, 'Espresso': 2.00 },
+    'Hot Chocolate': { 'Regular': 3.00, 'Espresso': 2.50 },
+    'Mocha': { 'Regular': 3.50, 'Espresso': 3.00 }
+  };
+
+  let totalAmount = 0;
+
+  function placeOrder() {
+    const drinks = [
+      { type: 'Coffee', size: 'Regular', qty: parseInt(document.getElementById('coffeeRegularQty').value) },
+      { type: 'Coffee', size: 'Espresso', qty: parseInt(document.getElementById('coffeeEspressoQty').value) },
+      { type: 'Hot Chocolate', size: 'Regular', qty: parseInt(document.getElementById('hotChocolateRegularQty').value) },
+      { type: 'Hot Chocolate', size: 'Espresso', qty: parseInt(document.getElementById('hotChocolateEspressoQty').value) },
+      { type: 'Mocha', size: 'Regular', qty: parseInt(document.getElementById('mochaRegularQty').value) },
+      { type: 'Mocha', size: 'Espresso', qty: parseInt(document.getElementById('mochaEspressoQty').value) }
+    ];
+
+    let itemCount = 0;
+    let summary = '';
+    totalAmount = 0;
+
+    drinks.forEach(item => {
+      if (item.qty > 0) {
+        const price = drinkPrices[item.type][item.size];
+        const itemTotal = price * item.qty;
+        totalAmount += itemTotal;
+        itemCount += item.qty;
+        summary += `<p>${item.qty} x ${item.type} ${item.size} - £${itemTotal.toFixed(2)}</p>`;
+      }
+    });
+
+    document.getElementById('orderSummary').innerHTML = summary;
+    document.getElementById('estimatedTime').innerText = `Estimated Wait Time: ${itemCount * 2} minutes`;
+    
+    // Auto-fill the amount to pay box
+    document.getElementById('paymentAmount').value = totalAmount.toFixed(2);
+    
+    document.getElementById('paymentSection').style.display = 'block';
+  }
+
+  function processPayment() {
+    const amount = parseFloat(document.getElementById('paymentAmount').value);
+    
+    if (amount >= totalAmount) {
+      alert('Payment successful! Enjoy your drinks.');
+    } else {
+      alert('Insufficient funds.');
+    }
+  }
+
+  // Chatbot code
+  function sendChat() {
+    const userInput = document.getElementById('chatInput').value.toLowerCase();
+    const chatWindow = document.getElementById('chatWindow');
+    let botResponse = '';
+
+    const prompts = {
+      coffee: 'Coffee is a classic choice, perfect for a morning boost!',
+      mocha: 'Mocha combines chocolate with coffee for a sweet treat.',
+      'hot chocolate': 'Hot Chocolate is a great option for a sweet, comforting drink.',
+      sizing: 'We offer Regular and Espresso sizes for most drinks.',
+      prices: 'Coffee Regular £2.50, Espresso £2.00, Mocha Regular £3.50, Espresso £3.00, Hot Chocolate Regular £3.00, Espresso £2.50.'
+    };
+
+    if (prompts[userInput]) {
+      botResponse = prompts[userInput];
+    } else {
+      botResponse = 'Sorry, I didn\'t understand that. Try one of the listed prompts!';
+    }
+
+    const userMessage = `<p class="user">You: ${userInput}</p>`;
+    const botMessage = `<p class="bot">Bot: ${botResponse}</p>`;
+
+    chatWindow.innerHTML += userMessage + botMessage;
+    chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll to the bottom
+    document.getElementById('chatInput').value = '';
+  }
+</script>
+
+</body>
+</html>
